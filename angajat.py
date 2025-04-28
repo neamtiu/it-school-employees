@@ -1,3 +1,31 @@
+'''Programul gestioneaza angajatii dintr-o firma.
+
+Aplicatia permite:
+- adaugarea de noi angajati
+- cautarea unui angajat dupa cnp-ul acestuia
+- modificarea datelor unui angajat selectat pe baza cnp-ului
+- stergerea unui angajat pe baza cnp-ului acestuia
+- afisarea tuturor angajatilor
+- calcularea costului total al salariilor din firma
+- calcularea costului total al salariilor dintr-un departament
+- realizarea fuluturasului de salar pentru un angajat
+- afisarea tuturor angajatilor cu o anumita senioritate
+- afisarea tuturor angajatilor dintr-un departament
+
+Datele stocate referitor la un angajat sunt:
+- nume
+- prenume
+- cnp
+- varsta
+- salar
+- departament
+- senioritate
+'''
+
+
+import json
+
+
 def meniu():
     '''Afiseaza meniul, citeste optiunea introdusa de utilizator
     si verifica daca e valida. Daca e valida, va apela
@@ -420,6 +448,44 @@ def calculator_fluturas_salar(lista_angajati):
         print(f'Angajatul cu CNP-ul: {cnp} nu a fost gasit! Verificati si reintroduceti CNP-ul corect.')
 
 
+def incarca_date_json():
+    '''Citeste datele angajatilor din fisierul json folosit ca baza de date
+
+    Arguments:
+    None
+
+    Returns:
+    lista_angajati: List -> lista care contine angajatii firmei sub forma de dictionar
+    '''
+
+    lista_angajati = []
+    try:
+        with open('date_angajati.json', 'r') as json_file:
+            lista_angajati = json.load(json_file)
+    except FileNotFoundError:
+        print('Fisierul JSON care contine informatiile despre angajati nu a fost gasit! Initializare angajati nereusita.')
+    except json.JSONDecodeError:
+        print('Eroare la decodarea fisierului JSON! Initializare angajati nereusita.')
+    except Exception as exception:
+        print('A intervenit o eroare neasteptata! Initializare angajati nereusita.')
+
+    return lista_angajati
+
+
+def salveaza_date_json(lista_angajati):
+    '''Salveaza datele angajatilor in fisierul json folosit ca baza de date
+
+    Arguments:
+    lista_angajati: List -> lista care contine angajatii firmei sub forma de dictionar
+
+    Returns:
+    None
+    '''
+
+    with open('date_angajati.json', 'w') as json_file:
+        json.dump(lista_angajati, json_file, indent=4)
+
+
 def app():
     '''Functie principala care ruleaza aplicatia
 
@@ -430,7 +496,7 @@ def app():
     None
     '''
 
-    lista_angajati = []
+    lista_angajati = incarca_date_json()
 
     while True:
         optiune = meniu()
@@ -447,6 +513,7 @@ def app():
             case 10: afisare_angajati(lista_angajati, departament=True)
             case 11:
                 print('Iesire din program.')
+                salveaza_date_json(lista_angajati)
                 break
 
 
