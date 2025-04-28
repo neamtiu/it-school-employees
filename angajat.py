@@ -509,7 +509,7 @@ def app():
             case 6: calculator_cost_salarii(lista_angajati)
             case 7: calculator_cost_salarii(lista_angajati, firma=False)
             case 8: calculator_fluturas_salar(lista_angajati)
-            case 9: afisare_angajati(lista_angajati, departament=True)
+            case 9: afisare_angajati(lista_angajati, senioritate=True)
             case 10: afisare_angajati(lista_angajati, departament=True)
             case 11:
                 print('Iesire din program.')
